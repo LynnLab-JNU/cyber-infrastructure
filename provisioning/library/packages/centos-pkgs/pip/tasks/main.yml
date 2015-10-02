@@ -1,0 +1,16 @@
+---
+
+- include: ../../epel-repo/tasks/main.yml
+
+- include: ../../development-tools/tasks/main.yml
+
+- name: install prerequisites system packages
+  yum: name={{ item }} state=latest
+  with_items:
+    - python-devel
+  when: (ansible_os_family == "RedHat" or ansible_distribution == "CentOS") and (ansible_distribution_major_version == "6" or ansible_distribution_major_version == "7") 
+
+- name: install pip using yum
+  yum: name=python-pip state=latest
+  when: (ansible_os_family == "RedHat" or ansible_distribution == "CentOS") and (ansible_distribution_major_version == "6" or ansible_distribution_major_version == "7")  
+

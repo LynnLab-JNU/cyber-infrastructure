@@ -1,0 +1,8 @@
+---
+
+- include: ../../pip/tasks/main.yml
+
+- debug: msg="ansible installation using pip"
+
+- name: install ansible using pip
+  pip: name=ansible state=latest

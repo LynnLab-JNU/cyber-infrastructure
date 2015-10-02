@@ -1,0 +1,11 @@
+---
+
+- name: install pip
+  include: ../../pip/main.yml 
+
+- name: install vagrant
+  include: ../../vagrant/main.yml
+
+- name: install ansible
+  include: ../../ansible/main.yml
+

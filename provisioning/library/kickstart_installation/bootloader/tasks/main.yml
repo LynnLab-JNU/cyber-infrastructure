@@ -1,0 +1,21 @@
+---
+
+- name: install syslinux package
+  yum: name=syslinux state=present
+
+ 
+- name: Copy the bootloader to the TFTP server directory
+  file: src={{ item }} dest=/var/lib/tftpboot
+  with_items:
+	- /usr/share/syslinux/pxelinux.0
+	- /usr/share/syslinux/menu.c32	
+  sudo: yes
+
+
+
+- name: Create the pxelinux.cfg directory in /var/lib/tftpboot 
+  file: src=prelinux.cfg dest=/var/lib/tftpboot
+  sudo: yes
+
+
+

@@ -1,0 +1,5 @@
+---
+
+- name: install the 'Development tools' package group
+  yum: name="@Development tools" state=present
+  when: (ansible_os_family == "RedHat" or ansible_distribution == "CentOS") and (ansible_distribution_major_version == "6" or ansible_distribution_major_version == "7")

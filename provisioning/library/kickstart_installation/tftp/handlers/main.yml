@@ -1,0 +1,4 @@
+---
+
+- name: restart tftp
+  service: name=xinetd  state=restarted

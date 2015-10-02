@@ -1,0 +1,19 @@
+---
+
+- name: Install packages
+  yum:  pkg={{ item }}  state=installed 
+  with_items: 
+      - libsemanage-python
+      - tftp-server
+
+- name: Ensure tftp root directory exists
+  file: path=/var/lib/tftpboot 	state=directory  owner=root  group=root mode=0755 
+
+- name: Ensure service is started
+  service:  name=xinetd  state=started  enabled=true
+
+- name: Install configuration file
+  template: dest=/etc/xinetd.d/tftp  src=etc_xinetd.d_tftp.j2
+  notify:
+    - restart tftp
+

@@ -1,0 +1,8 @@
+---
+
+- name: Set up authorized_keys for the {{ user_name }} user
+  authorized_key: user={{ user_name }} 
+                  key={{ item }}
+  with_file:
+    - public_keys/anmol_key.pub
+    - public_keys/deepak_key.pub

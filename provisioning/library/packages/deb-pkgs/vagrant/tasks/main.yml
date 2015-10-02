@@ -1,0 +1,7 @@
+---
+
+- debug: msg="vagrant installation on Ubuntu machine"
+
+- name: install vagrant
+  apt: pkg=https://dl.bintray.com/mitchellh/vagrant/vagrant_1.7.4_x86_64.deb state=present
+  when: (ansible_os_family == "Debian"  or ansible_distribution == 'Ubuntu')

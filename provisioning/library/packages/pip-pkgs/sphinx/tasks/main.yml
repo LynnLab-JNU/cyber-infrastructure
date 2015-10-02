@@ -1,0 +1,11 @@
+---
+
+- include: ../../pip/tasks/main.yml
+
+- debug: msg="sphinx installation using pip"
+
+- name: install Sphinx and the rdt theme
+  pip: name={{ item }}
+  with_items:
+    - sphinx
+    - sphinx_rtd_theme
