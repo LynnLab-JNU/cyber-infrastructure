@@ -1,0 +1,35 @@
+---
+
+# Install PostgreSQL 
+
+- name: Install postgreSQL packages
+  apt: name={{item}} state=latest
+  with_items:
+        - postgresql
+        - postgresql-contrib
+        - python-psycopg2
+  when: ubuntu_14_conditional 
+
+- name: Install postgreSQL packages 
+  yum: name={{item}} state=latest
+  with_items:
+        - postgresql-server
+        - postgresql-contrib
+        - python-psycopg2
+  when: centos_6_or_7_conditional 
+
+
+# Configure PostgreSQL to start when the server boots
+
+- name: start postgreSQL when the server boots
+  service: name=postgresql enabled=yes
+  
+# Setup a PostgreSQL database 
+
+- include: default_postgresql_setup.yml
+  when: (default_setup == True)
+
+
+#- include: custom_postgresql_setup.yml
+#  when: (default_setup == False)
+ 

@@ -1,0 +1,40 @@
+---
+
+# Setup a PostgreSQL database 
+
+- name: Initialize postgreSQL data directory
+  shell: "/usr/bin/initdb -D {{ postgresql_db_dir }} creates={{ postgresql_db_dir }}/postgresql.conf"  
+  sudo_user: "{{ postgresql_admin_user }}" 
+
+- name: Set Postgres port number
+  lineinfile: dest={{ postgresql_db_dir }}/postgresql.conf regexp='^#port\ =\ 5432' line='port = {{ postgresql_db_port }}'  #'
+  sudo_user: "{{ postgresql_admin_user }}" 
+
+- name: Set Postgres unix_socket_directories
+  lineinfile: dest={{ postgresql_db_dir }}/postgresql.conf regexp='^#unix_socket_directories\ =' line="unix_socket_directories =  '{{ postgresql_db_dir }}' "  #" 
+  sudo_user: "{{ postgresql_admin_user }}"
+
+- name: Check if PostgreSQL server is running
+  stat: path={{ postgresql_db_dir }}/postmaster.pid
+  register: postgresql_running
+  sudo_user: "{{ postgresql_admin_user }}"
+
+- name: Restart PostgreSQL
+  shell: "/usr/bin/pg_ctl -D {{ postgresql_db_dir }} -w -l {{ postgresql_db_dir }}/postgresql.log -m fast restart"
+  when: postgresql_running.stat.exists
+  sudo_user: "{{ postgresql_admin_user }}"
+
+- name: Start PostgreSQL
+  shell: "/usr/bin/pg_ctl -D {{ postgresql_db_dir }} -w -l {{ postgresql_db_dir }}/postgresql.log start"
+  when: not postgresql_running.stat.exists
+  sudo_user: "{{ postgresql_admin_user }}" 
+
+- name: Create role
+  postgresql_user: port={{ postgresql_db_port }} name={{ postgresql_galaxyuser }} password={{ postgresql_galaxyuser_password }} db=postgres  login_user={{ postgresql_admin_user }} login_unix_socket={{ postgresql_db_dir }} role_attr_flags=CREATEDB,LOGIN
+  sudo_user: "{{ postgresql_admin_user }}"
+
+- name: Create db
+  postgresql_db: name={{ postgresql_galaxydb }} port={{ postgresql_db_port }} login_user={{ postgresql_galaxyuser }} login_unix_socket={{ postgresql_db_dir }} 
+  sudo_user: "{{ postgresql_admin_user }}"
+
+

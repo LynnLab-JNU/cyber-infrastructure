@@ -1,0 +1,17 @@
+---
+
+# Install mongodb
+
+- name: Install mongodb packages 
+  yum: name={{item}} state=latest
+  with_items:
+        - mongodb-server
+        - mongodb
+  when: centos_6_or_7_conditional 
+
+
+# Configure mongodb to start when the server boots
+
+- name: start mongodb when the server boots
+  service: name=mongodb enabled=yes
+

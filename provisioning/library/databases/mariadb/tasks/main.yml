@@ -1,0 +1,16 @@
+---
+
+# Install mariadb
+
+- name: Install mariadb packages 
+  yum: name={{item}} state=latest
+  with_items:
+        - mariadb-server 
+        - mariadb
+  when: centos_7_conditional 
+
+
+# Configure mariadb to start when the server boots
+
+- name: start mariadb when the server boots
+  service: name=mariadb enabled=yes

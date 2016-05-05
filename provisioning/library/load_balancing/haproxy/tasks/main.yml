@@ -1,0 +1,25 @@
+---
+
+- name: install haproxy 
+  yum: name={{item}} state=present
+  with_items:
+       - haproxy
+  when: centos_6_or_7_conditional
+
+- name: install haproxy 
+  apt: name={{item}} state=present
+  with_items:
+       - haproxy
+  when: ubuntu_14_conditional
+
+- name: Configure Rsyslog to get logs for HAProxy.
+  line: dest=/etc/rsyslog.conf ............
+
+- name: haproxy service start
+  
+
+- name: haproxy service restart
+
+
+- name: haproxy start on boot
+  service: name=haproxy enabled=yes

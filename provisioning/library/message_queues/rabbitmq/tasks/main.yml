@@ -1,0 +1,20 @@
+---
+
+- name: install rabbitmq-server package
+  yum: name=rabbitmq-server state=present
+  when: ((ansible_os_family == "RedHat") or (ansible_distribution == "CentOS")) and ((ansible_distribution_major_version == "6") or (ansible_distribution_major_version == "7"))
+
+- name: install rabbitmq-server package
+  apt: name=rabbitmq-server state=present
+  when: ((ansible_os_family == "Debian")  or (ansible_distribution == 'Ubuntu')) 
+
+- name: configure rabbitmq to start when the system boots
+  service: name=rabbitmq-server enabled=yes
+
+- name: start rabbitmq
+  service: name=rabbitmq-server state=started
+
+- name: Add the openstack user
+  rabbitmq_user: user=openstack password={{ RABBIT_PASS }} vhost="/" configure_priv=".*" read_priv=".*" write_priv=".*" state=present
+
+

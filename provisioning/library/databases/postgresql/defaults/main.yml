@@ -1,0 +1,34 @@
+--- 
+
+centos_6_conditional: '(((ansible_os_family == "RedHat") or (ansible_distribution == "CentOS")) and (ansible_distribution_major_version == "6"))'
+centos_7_conditional: '(((ansible_os_family == "RedHat") or (ansible_distribution == "CentOS")) and (ansible_distribution_major_version == "7"))'
+centos_6_or_7_conditional: '(((ansible_os_family == "RedHat") or (ansible_distribution == "CentOS")) and ((ansible_distribution_major_version == "6") or (ansible_distribution_major_version == "7")))'
+ubuntu_14_conditional: '(((ansible_os_family == "Debian") or (ansible_distribution == "Ubuntu")) and (ansible_distribution_version == "14"))'
+
+
+
+# Change "default_setup: False" for custom_setup
+default_setup: True
+
+
+## Custom Settings 
+
+postgresql_admin_user: galaxy
+postgresql_db_dir: "/home/galaxy/galaxydb"
+postgresql_db_port: 5440
+
+
+## in centos
+postgresql_bin_dir: /usr/bin
+
+## in ubuntu
+#postgresql_bin_dir: /usr/lib/postgresql/9.3/bin
+
+
+
+
+## database users,db,passwords
+
+postgresql_galaxyuser: galaxy
+postgresql_galaxyuser_password: galaxyp
+postgresql_galaxydb: galaxydb

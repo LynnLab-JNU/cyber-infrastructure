@@ -1,0 +1,34 @@
+---
+
+# Setup a PostgreSQL database 
+
+#- name: Initialize postgreSQL data directory
+#  shell: "/usr/bin/initdb -D /var/lib/pgsql/data"    
+#  sudo_user: postgres 
+
+#- name: Check if PostgreSQL server is running
+#  stat: path=/var/lib/pgsql/data/postmaster.pid
+#  register: postgresql_running
+#  sudo_user: postgres
+
+#- name: Restart PostgreSQL
+#  shell: "/usr/bin/pg_ctl -D  /var/lib/pgsql/data -w -l /var/lib/pgsql/data/postgresql.log -m fast restart"
+#  when: postgresql_running.stat.exists
+#  sudo_user: postgres
+
+#- name: Start PostgreSQL
+#  shell: "/usr/bin/pg_ctl -D /var/lib/pgsql/data  -w -l /var/lib/pgsql/data/postgresql.log start"
+#  when: not postgresql_running.stat.exists
+#  sudo_user: postgres 
+
+#- name: Create role
+#  postgresql_user: name={{ postgresql_galaxyuser }} password={{ postgresql_galaxyuser_password }} db=postgres  login_user=postgres  role_attr_flags=CREATEDB,LOGIN
+#  sudo_user: postgres 
+
+#- name: Create db
+#  postgresql_db: name={{ postgresql_galaxydb }} login_user={{ postgresql_galaxyuser }} 
+#  sudo_user: postgres
+
+- name: Edit pg_hba.conf
+  lineinfile: dest=/var/lib/pgsql/data/pg_hba.conf regexp='^local\t\t*all\t\t*all\t\tmd5' line='local\tall\t\tall\t\t\t\t\ttrust'
+
